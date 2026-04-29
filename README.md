@@ -20,14 +20,14 @@ baseline under limited compute and time.
 
 LIBERO-10 success rates:
 
-| Model / setting | Success | Rate |
+| Checkpoint / eval run | Success | Rate |
 |---|---:|---:|
-| Official SFT baseline | 80 / 496 | 16.13% |
-| Official post-RL baseline | 430 / 496 | 86.69% |
-| Offline R1 from official SFT + full409 data | 86 / 500 | 17.20% |
-| Offline R1+R2 from official SFT + full409 data | 92 / 500 | 18.40% |
-| Spatial-offline-trained R1 checkpoint evaluated on LIBERO-10 | 355 / 448 | 79.24% |
-| Spatial-offline-trained R1+R2 checkpoint evaluated on LIBERO-10 | 364 / 448 | 81.25% |
+| `Openvla-oft-SFT-libero10-traj1_eval-libero10` | 80 / 496 | 16.13% |
+| `openvla-oft-libero10-traj1-rl_eval-libero10` | 430 / 496 | 86.69% |
+| `Openvla-oft-SFT-libero10-traj1_offline-r1_libero10-full409_eval-libero10` | 86 / 500 | 17.20% |
+| `Openvla-oft-SFT-libero10-traj1_offline-r1r2_libero10-full409_eval-libero10` | 92 / 500 | 18.40% |
+| `openvla-oft-libero10-traj1-rl_offline-r1_libero-spatial-full_eval-libero10` | 355 / 448 | 79.24% |
+| `openvla-oft-libero10-traj1-rl_offline-r1r2_libero-spatial-full_eval-libero10` | 364 / 448 | 81.25% |
 
 The most important controlled comparison is:
 
