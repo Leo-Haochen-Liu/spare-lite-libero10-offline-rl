@@ -1,0 +1,338 @@
+{
+  "official_sft": {
+    "success": 80,
+    "total": 496,
+    "per_task": {
+      "T0": {
+        "success": 4,
+        "total": 50,
+        "rate": 0.08
+      },
+      "T1": {
+        "success": 9,
+        "total": 49,
+        "rate": 0.1836734693877551
+      },
+      "T2": {
+        "success": 29,
+        "total": 50,
+        "rate": 0.58
+      },
+      "T3": {
+        "success": 13,
+        "total": 50,
+        "rate": 0.26
+      },
+      "T4": {
+        "success": 1,
+        "total": 49,
+        "rate": 0.02040816326530612
+      },
+      "T5": {
+        "success": 8,
+        "total": 50,
+        "rate": 0.16
+      },
+      "T6": {
+        "success": 5,
+        "total": 50,
+        "rate": 0.1
+      },
+      "T7": {
+        "success": 3,
+        "total": 49,
+        "rate": 0.061224489795918366
+      },
+      "T8": {
+        "success": 3,
+        "total": 50,
+        "rate": 0.06
+      },
+      "T9": {
+        "success": 5,
+        "total": 49,
+        "rate": 0.10204081632653061
+      }
+    }
+  },
+  "official_postrl": {
+    "success": 430,
+    "total": 496,
+    "per_task": {
+      "T0": {
+        "success": 35,
+        "total": 50,
+        "rate": 0.7
+      },
+      "T1": {
+        "success": 42,
+        "total": 50,
+        "rate": 0.84
+      },
+      "T2": {
+        "success": 48,
+        "total": 48,
+        "rate": 1.0
+      },
+      "T3": {
+        "success": 47,
+        "total": 50,
+        "rate": 0.94
+      },
+      "T4": {
+        "success": 39,
+        "total": 50,
+        "rate": 0.78
+      },
+      "T5": {
+        "success": 49,
+        "total": 49,
+        "rate": 1.0
+      },
+      "T6": {
+        "success": 42,
+        "total": 50,
+        "rate": 0.84
+      },
+      "T7": {
+        "success": 43,
+        "total": 49,
+        "rate": 0.8775510204081632
+      },
+      "T8": {
+        "success": 41,
+        "total": 50,
+        "rate": 0.82
+      },
+      "T9": {
+        "success": 44,
+        "total": 50,
+        "rate": 0.88
+      }
+    }
+  },
+  "sft_full409_r1": {
+    "success": 86,
+    "total": 500,
+    "per_task": {
+      "T0": {
+        "success": 6,
+        "total": 50,
+        "rate": 0.12
+      },
+      "T1": {
+        "success": 10,
+        "total": 50,
+        "rate": 0.2
+      },
+      "T2": {
+        "success": 31,
+        "total": 50,
+        "rate": 0.62
+      },
+      "T3": {
+        "success": 21,
+        "total": 50,
+        "rate": 0.42
+      },
+      "T4": {
+        "success": 1,
+        "total": 50,
+        "rate": 0.02
+      },
+      "T5": {
+        "success": 9,
+        "total": 50,
+        "rate": 0.18
+      },
+      "T6": {
+        "success": 4,
+        "total": 50,
+        "rate": 0.08
+      },
+      "T7": {
+        "success": 2,
+        "total": 50,
+        "rate": 0.04
+      },
+      "T8": {
+        "success": 1,
+        "total": 50,
+        "rate": 0.02
+      },
+      "T9": {
+        "success": 1,
+        "total": 50,
+        "rate": 0.02
+      }
+    }
+  },
+  "sft_full409_r1r2": {
+    "success": 92,
+    "total": 500,
+    "per_task": {
+      "T0": {
+        "success": 7,
+        "total": 50,
+        "rate": 0.14
+      },
+      "T1": {
+        "success": 13,
+        "total": 50,
+        "rate": 0.26
+      },
+      "T2": {
+        "success": 31,
+        "total": 50,
+        "rate": 0.62
+      },
+      "T3": {
+        "success": 17,
+        "total": 50,
+        "rate": 0.34
+      },
+      "T4": {
+        "success": 0,
+        "total": 50,
+        "rate": 0.0
+      },
+      "T5": {
+        "success": 8,
+        "total": 50,
+        "rate": 0.16
+      },
+      "T6": {
+        "success": 6,
+        "total": 50,
+        "rate": 0.12
+      },
+      "T7": {
+        "success": 0,
+        "total": 50,
+        "rate": 0.0
+      },
+      "T8": {
+        "success": 5,
+        "total": 50,
+        "rate": 0.1
+      },
+      "T9": {
+        "success": 5,
+        "total": 50,
+        "rate": 0.1
+      }
+    }
+  },
+  "postrl_rlbase_r1": {
+    "success": 355,
+    "total": 448,
+    "per_task": {
+      "T0": {
+        "success": 22,
+        "total": 40,
+        "rate": 0.55
+      },
+      "T1": {
+        "success": 33,
+        "total": 47,
+        "rate": 0.7021276595744681
+      },
+      "T2": {
+        "success": 41,
+        "total": 47,
+        "rate": 0.8723404255319149
+      },
+      "T3": {
+        "success": 43,
+        "total": 48,
+        "rate": 0.8958333333333334
+      },
+      "T4": {
+        "success": 27,
+        "total": 40,
+        "rate": 0.675
+      },
+      "T5": {
+        "success": 44,
+        "total": 46,
+        "rate": 0.9565217391304348
+      },
+      "T6": {
+        "success": 38,
+        "total": 44,
+        "rate": 0.8636363636363636
+      },
+      "T7": {
+        "success": 39,
+        "total": 45,
+        "rate": 0.8666666666666667
+      },
+      "T8": {
+        "success": 26,
+        "total": 45,
+        "rate": 0.5777777777777777
+      },
+      "T9": {
+        "success": 42,
+        "total": 46,
+        "rate": 0.9130434782608695
+      }
+    }
+  },
+  "postrl_rlbase_r1r2": {
+    "success": 364,
+    "total": 448,
+    "per_task": {
+      "T0": {
+        "success": 23,
+        "total": 44,
+        "rate": 0.5227272727272727
+      },
+      "T1": {
+        "success": 34,
+        "total": 46,
+        "rate": 0.7391304347826086
+      },
+      "T2": {
+        "success": 38,
+        "total": 43,
+        "rate": 0.8837209302325582
+      },
+      "T3": {
+        "success": 40,
+        "total": 43,
+        "rate": 0.9302325581395349
+      },
+      "T4": {
+        "success": 36,
+        "total": 46,
+        "rate": 0.782608695652174
+      },
+      "T5": {
+        "success": 42,
+        "total": 43,
+        "rate": 0.9767441860465116
+      },
+      "T6": {
+        "success": 38,
+        "total": 45,
+        "rate": 0.8444444444444444
+      },
+      "T7": {
+        "success": 44,
+        "total": 47,
+        "rate": 0.9361702127659575
+      },
+      "T8": {
+        "success": 31,
+        "total": 46,
+        "rate": 0.6739130434782609
+      },
+      "T9": {
+        "success": 38,
+        "total": 45,
+        "rate": 0.8444444444444444
+      }
+    }
+  }
+}

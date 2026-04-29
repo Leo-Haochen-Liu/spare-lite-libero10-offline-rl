@@ -1,0 +1,1 @@
+"""SpaRe-lite package."""

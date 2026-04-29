@@ -1,0 +1,116 @@
+\section{Methodology}
+\label{sec:method}
+
+We study reward augmentation for vision-language-action (VLA) policy optimization in LIBERO.
+Rather than training a policy from scratch, we initialize from an author-provided supervised fine-tuning (SFT) checkpoint and compare two reward settings under the same initialization, environment, and optimization pipeline:
+\begin{enumerate}
+    \item a baseline reward using only the environment reward $R_{1,t}$, and
+    \item our proposed reward using a combined objective $R_t = R_{1,t} + \lambda R_{2,t}$.
+\end{enumerate}
+This design isolates the effect of the proposed spatial reward term $R_{2,t}$ while controlling for the backbone model and starting point.
+
+\subsection{Policy Initialization}
+
+Let $\pi_\theta(a_t \mid o_t, q)$ denote a VLA policy that predicts a robot action $a_t$ from the current observation $o_t$ and language instruction $q$.
+Instead of learning $\theta$ from scratch, we initialize $\theta$ from an author-provided SFT checkpoint:
+\begin{equation}
+    \theta_0 \leftarrow \theta_{\text{SFT}}.
+\end{equation}
+This initialization gives a strong and reproducible starting point, allowing us to focus on whether the additional reward term improves downstream policy optimization.
+
+\subsection{Baseline Environment Reward}
+
+During rollout in LIBERO, the simulator provides an environment reward
+\begin{equation}
+    R_{1,t} = r_{\text{env}}(s_t, a_t, s_{t+1}),
+\end{equation}
+where $s_t$ and $s_{t+1}$ denote the environment states before and after action $a_t$.
+In LIBERO, this reward is typically sparse and tied to task completion or progress.
+
+If we use only the simulator reward, the optimization objective reduces to the baseline setting
+\begin{equation}
+    R^{\text{base}}_t = R_{1,t}.
+\end{equation}
+
+\subsection{Spatial Reward Augmentation}
+
+Our key idea is to supplement the sparse environment reward with a spatial-consistency reward derived from latent alignment.
+Given the current observation $o_t$, the policy produces an internal feature representation $h_t$.
+We project it into a policy-side spatial latent:
+\begin{equation}
+    z^{\text{pol}}_t = g_\phi(h_t),
+\end{equation}
+where $g_\phi(\cdot)$ is a lightweight learnable projection head.
+
+In parallel, we obtain a reference spatial latent from a frozen spatial encoder $f_{\text{ref}}(\cdot)$:
+\begin{equation}
+    z^{\text{ref}}_t = f_{\text{ref}}(o_t).
+\end{equation}
+
+We define the auxiliary spatial reward $R_{2,t}$ as the cosine similarity between the two latent representations:
+\begin{equation}
+    R_{2,t} = \mathrm{cos}\!\left(z^{\text{pol}}_t, z^{\text{ref}}_t\right)
+    = \frac{\left(z^{\text{pol}}_t\right)^\top z^{\text{ref}}_t}
+    {\left\|z^{\text{pol}}_t\right\|_2 \left\|z^{\text{ref}}_t\right\|_2}.
+\end{equation}
+
+Intuitively, $R_{2,t}$ encourages the policy to produce latent representations that are more spatially aligned with a frozen spatial reference model, thereby injecting additional structure into policy optimization beyond the sparse task reward alone.
+
+\subsection{Combined Reward Objective}
+
+Our proposed reward combines the original environment signal and the spatial reward:
+\begin{equation}
+    R_t = R_{1,t} + \lambda R_{2,t},
+\end{equation}
+where $\lambda \ge 0$ controls the contribution of the spatial reward.
+
+This yields two experimental branches:
+\begin{align}
+    \text{Baseline:} \quad & R_t = R_{1,t}, \\
+    \text{Ours:} \quad & R_t = R_{1,t} + \lambda R_{2,t}.
+\end{align}
+Because both branches share the same initial checkpoint and rollout environment, the performance gap directly measures the impact of the proposed spatial reward term.
+
+\subsection{Policy Optimization}
+
+Let $\tau = (s_0, a_0, s_1, a_1, \dots)$ denote a rollout trajectory sampled from $\pi_\theta$ in the simulator.
+We optimize the policy parameters to maximize the expected return under the chosen reward definition:
+\begin{equation}
+    J(\theta)
+    = \mathbb{E}_{\tau \sim \pi_\theta}
+    \left[
+        \sum_{t=0}^{T-1} \gamma^t R_t
+    \right],
+\end{equation}
+where $\gamma$ is the discount factor.
+
+Under the baseline setting, $R_t = R_{1,t}$.
+Under our method, $R_t = R_{1,t} + \lambda R_{2,t}$.
+The corresponding policy-gradient objective can be written as
+\begin{equation}
+    \nabla_\theta J(\theta)
+    =
+    \mathbb{E}_{\tau \sim \pi_\theta}
+    \left[
+        \sum_{t=0}^{T-1}
+        \nabla_\theta \log \pi_\theta(a_t \mid o_t, q)\,
+        \hat{A}_t
+    \right],
+\end{equation}
+where $\hat{A}_t$ is the advantage estimate computed from the reward sequence.
+In our method, $\hat{A}_t$ is induced by the augmented reward and thus reflects both task success and spatial alignment.
+
+\subsection{Experimental Logic}
+
+The methodology is designed to answer a focused question:
+\emph{given the same author-provided SFT initialization, does adding the spatial reward term improve policy learning beyond the original environment reward alone?}
+
+Accordingly, our comparison keeps the following fixed:
+\begin{itemize}
+    \item initial checkpoint,
+    \item benchmark environment,
+    \item observation and language inputs, and
+    \item optimization pipeline.
+\end{itemize}
+The only intended change is the reward definition.
+This makes the comparison between $R_{1,t}$ and $R_{1,t} + \lambda R_{2,t}$ a controlled test of the proposed method.

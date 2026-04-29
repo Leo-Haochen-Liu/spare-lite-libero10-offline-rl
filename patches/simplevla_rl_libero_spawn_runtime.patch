@@ -1,0 +1,46 @@
+diff --git a/verl/workers/rollout/rob_rollout.py b/verl/workers/rollout/rob_rollout.py
+index 9fe3d1f..81a5272 100644
+--- a/verl/workers/rollout/rob_rollout.py
++++ b/verl/workers/rollout/rob_rollout.py
+@@ -66,6 +66,12 @@ from multiprocessing import Process, Queue
+ 
+ __all__ = ['RobHFRollout']
+ 
++
++def _get_libero_mp_context():
++    """Return the multiprocessing context used for LIBERO env workers."""
++    start_method = os.environ.get('SIMPLEVLA_LIBERO_MP_START_METHOD', 'spawn')
++    return multiprocessing.get_context(start_method)
++
+ # Environment initialization lock for Robotwin
+ _ENV_INIT_LOCK = threading.Lock()
+ 
+@@ -785,18 +791,25 @@ class RobHFRollout(BaseRollout):
+         processes = []
+         input_queues = []
+         output_queues = []
++        mp_ctx = _get_libero_mp_context()
++        start_delay = float(os.environ.get('SIMPLEVLA_LIBERO_WORKER_START_DELAY', '0'))
++
++        torch.cuda.empty_cache()
++        gc.collect()
+         
+         for idx in range(batch_size):
+             task_name = task_suite_name[idx]
+             t_id = task_id[idx][0].item()
+             tr_id = trial_id[idx][0].item()
+-            input_q = Queue()
+-            output_q = Queue()
+-            p = Process(
++            input_q = mp_ctx.Queue()
++            output_q = mp_ctx.Queue()
++            p = mp_ctx.Process(
+                 target=env_worker,
+                 args=(task_name, t_id, tr_id, self.config, input_q, output_q, is_valid, global_steps, max_steps)
+             )
+             p.start()
++            if start_delay > 0:
++                time.sleep(start_delay)
+             processes.append(p)
+             input_queues.append(input_q)
+             output_queues.append(output_q)
