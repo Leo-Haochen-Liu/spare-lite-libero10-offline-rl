@@ -22,16 +22,16 @@ LIBERO-10 success rates:
 | Official post-RL baseline | 430 / 496 | 86.69% |
 | Offline R1 from official SFT + full409 data | 86 / 500 | 17.20% |
 | Offline R1+R2 from official SFT + full409 data | 92 / 500 | 18.40% |
-| Earlier R1 checkpoint evaluated on LIBERO-10 | 355 / 448 | 79.24% |
-| Earlier R1+R2 checkpoint evaluated on LIBERO-10 | 364 / 448 | 81.25% |
+| Earlier spatial-offline R1 checkpoint evaluated on LIBERO-10 | 355 / 448 | 79.24% |
+| Earlier spatial-offline R1+R2 checkpoint evaluated on LIBERO-10 | 364 / 448 | 81.25% |
 
 The most important controlled comparison is:
 
 `Official SFT < R1 from SFT < R1+R2 from SFT`
 
-The earlier high-performing pair was trained on a different data source and is
-included as an empirical reference rather than the strict LIBERO-10 full409
-comparison.
+The earlier high-performing pair was trained from a different offline data source
+(`libero_spatial_transition_full.jsonl`) and is included as an empirical
+cross-benchmark reference rather than the strict LIBERO-10 full409 comparison.
 
 ## Repository Layout
 
@@ -63,12 +63,45 @@ For a fresh machine, regenerate or remap images using the extraction scripts in
 `spare_lite/` and the collection script in `scripts/`. The JSONL itself is tracked
 with Git LFS because it is larger than GitHub's normal 100 MB file limit.
 
+Clone this repository with Git LFS enabled:
+
+```bash
+git lfs install
+git clone https://github.com/Leo-Haochen-Liu/spare-lite-libero10-offline-rl.git
+cd spare-lite-libero10-offline-rl
+git lfs pull
+```
+
 ## Official Checkpoints
 
 Download the author-provided checkpoints separately:
 
-- `Haozhan72/Openvla-oft-SFT-libero10-traj1`
-- `Haozhan72/openvla-oft-libero10-traj1-rl`
+- Official SFT baseline:
+  [`Haozhan72/Openvla-oft-SFT-libero10-traj1`](https://huggingface.co/Haozhan72/Openvla-oft-SFT-libero10-traj1)
+- Official post-RL baseline:
+  [`Haozhan72/openvla-oft-libero10-traj1-rl`](https://huggingface.co/Haozhan72/openvla-oft-libero10-traj1-rl)
+
+Example download commands:
+
+```bash
+# Install the current Hugging Face CLI if needed:
+# pip install -U huggingface_hub
+
+mkdir -p checkpoints
+
+hf download Haozhan72/Openvla-oft-SFT-libero10-traj1 \
+  --local-dir checkpoints/Openvla-oft-SFT-libero10-traj1
+
+hf download Haozhan72/openvla-oft-libero10-traj1-rl \
+  --local-dir checkpoints/openvla-oft-libero10-traj1-rl
+```
+
+If your network cannot access the Hugging Face Hub directly, set a mirror endpoint
+before downloading:
+
+```bash
+export HF_ENDPOINT=https://hf-mirror.com
+```
 
 The local paths used in our run were:
 
@@ -78,6 +111,40 @@ The local paths used in our run were:
 The post-RL sandbox used hard links to the official checkpoint plus the missing
 custom-code files (`train_utils.py`, `constants.py`) needed by
 `trust_remote_code=True`.
+
+In our downloaded post-RL directory, the model weights were present but
+`train_utils.py` and `constants.py` were missing. We copied those custom-code
+files from a working SimpleVLA/OpenVLA-OFT sandbox into a writable sandbox copy.
+This changes only local loading/runtime files, not model weights.
+
+## External Code Dependencies
+
+This repo is not a full vendor copy of SimpleVLA-RL, LIBERO, or SpatialVLA.
+Install/clone those separately:
+
+- SimpleVLA-RL official pipeline: use the authors' repository and apply
+  `patches/simplevla_rl_libero_spawn_runtime.patch` if Ray/LIBERO env workers
+  fail with CUDA fork initialization errors.
+- LIBERO benchmark code and assets: required for online rollout evaluation.
+- SpatialVLA checkpoint: used as the spatial reward/model backend in the offline
+  training script.
+
+The exact remote paths used in our AutoDL run were:
+
+```text
+/root/autodl-tmp/SimpleVLA-RL
+/root/autodl-tmp/LIBERO
+/root/autodl-tmp/checkpoints/spatialvla-4b-224-pt
+```
+
+If using the official SimpleVLA-RL evaluation scripts, set the usual LIBERO
+headless rendering environment:
+
+```bash
+export MUJOCO_GL=egl
+export PYOPENGL_PLATFORM=egl
+export ROBOT_PLATFORM=LIBERO
+```
 
 ## Training Configuration
 
@@ -156,6 +223,11 @@ Relevant produced checkpoint directories in our remote run:
 - `libero10_full409_r1r2` (~29 GB)
 
 The partial training checkpoints are about 2.1 GB each.
+
+At the time this README was written, these large checkpoints were being exported
+and transferred separately for Hugging Face upload. They are not required to
+understand or rerun the pipeline from the official checkpoints, but they are
+useful for direct verification without retraining.
 
 ## Notes
 

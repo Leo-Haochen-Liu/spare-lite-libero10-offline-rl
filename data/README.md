@@ -18,3 +18,13 @@ regenerating images with the extraction utilities in `spare_lite/`.
 
 This file is tracked via Git LFS because it is larger than GitHub's normal single
 file limit.
+
+Use:
+
+```bash
+git lfs install
+git lfs pull
+```
+
+after cloning the repository to materialize the JSONL instead of the small LFS
+pointer file.
