@@ -303,16 +303,13 @@ Relevant produced checkpoint directories in our remote run:
 
 The partial training checkpoints are about 2.1 GB each.
 
-The first two exported checkpoints have been transferred to local staging for
-Hugging Face upload. After publishing, add the final Hugging Face model links
-here so users can evaluate without retraining. They are not required to
-understand or rerun the pipeline from the official checkpoints, but they are
-useful for direct verification.
+Published Hugging Face checkpoints for the strict SFT-baseline full409 run:
 
-Suggested Hugging Face model IDs:
+- R1: [`liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`](https://huggingface.co/liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409)
+- R1+R2: [`liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`](https://huggingface.co/liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409)
 
-- `liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`
-- `liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`
+Planned Hugging Face model IDs for the post-RL spatial-data reference pair:
+
 - `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`
 - `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`
 
