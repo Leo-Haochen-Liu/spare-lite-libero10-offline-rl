@@ -37,6 +37,28 @@ The spatial-offline-trained pair was trained from a different offline data sourc
 (`libero_spatial_transition_full.jsonl`) and is included as an empirical
 cross-dataset reference rather than the strict LIBERO-10 full409 comparison.
 
+## What This Repo Reproduces
+
+This repository packages two related training/evaluation branches:
+
+1. **Controlled LIBERO-10 branch:** start from the official SFT checkpoint
+   `Haozhan72/Openvla-oft-SFT-libero10-traj1`, train offline R1 and R1+R2 on
+   `libero10_expert_plus_sft_failures_409.jsonl`, export full VLA checkpoints,
+   then evaluate on LIBERO-10 with the official SimpleVLA-RL rollout pipeline.
+   This is the strict apples-to-apples result supporting
+   `SFT < R1 < R1+R2`.
+
+2. **Post-RL spatial-data reference branch:** start from the official post-RL
+   checkpoint `Haozhan72/openvla-oft-libero10-traj1-rl`, train offline R1 and
+   R1+R2 on the earlier `libero_spatial_transition_full.jsonl` data source, then
+   evaluate the exported checkpoints on LIBERO-10. This branch is included as a
+   reference because it produced strong LIBERO-10 results, but it is not the
+   primary controlled LIBERO-10 full409 comparison.
+
+Both branches use the same evaluation backend: the official SimpleVLA-RL
+LIBERO rollout code, with only the runtime patch documented in `patches/` when
+needed for worker startup stability.
+
 ## Repository Layout
 
 - `spare_lite/`: data adapters, reward helpers, and dataset extraction utilities.
@@ -127,9 +149,12 @@ This changes only local loading/runtime files, not model weights.
 This repo is not a full vendor copy of SimpleVLA-RL, LIBERO, or SpatialVLA.
 Install/clone those separately:
 
-- SimpleVLA-RL official pipeline: use the authors' repository and apply
-  `patches/simplevla_rl_libero_spawn_runtime.patch` if Ray/LIBERO env workers
-  fail with CUDA fork initialization errors.
+- SimpleVLA-RL official pipeline:
+  [`PRIME-RL/SimpleVLA-RL`](https://github.com/PRIME-RL/SimpleVLA-RL).
+  Our AutoDL run used commit
+  `7c51662df27b586f9e8a1ab35fcf849f2b8852f9`. Apply
+  `patches/simplevla_rl_libero_spawn_runtime.patch` only if Ray/LIBERO env
+  workers fail with CUDA fork initialization errors.
 - LIBERO benchmark code and assets: required for online rollout evaluation.
 - SpatialVLA checkpoint: used as the spatial reward/model backend in the offline
   training script.
@@ -150,6 +175,19 @@ export MUJOCO_GL=egl
 export PYOPENGL_PLATFORM=egl
 export ROBOT_PLATFORM=LIBERO
 ```
+
+## Compute Used
+
+The final remote AutoDL experiments were run on:
+
+- GPU: 2 x NVIDIA RTX PRO 6000 Blackwell Server Edition, 97,887 MiB each.
+- CPU: Intel Xeon Platinum 8470Q, 208 logical CPUs.
+- RAM: about 1.0 TiB.
+- Training/eval mode: two single-GPU jobs were often run in parallel, one per
+  GPU. Each LIBERO rollout eval used `VAL_BATCH_SIZE=1`.
+
+The project was designed for constrained compute: no online RL interaction, no
+full-parameter fine-tuning, and only a small set of policy modules unfrozen.
 
 ## Training Configuration
 
@@ -216,6 +254,40 @@ Parsed counts:
 
 - `analysis/libero10_final_comparison_counts.json`
 
+## Reproduction Checklist
+
+To reproduce the strict SFT-baseline result from scratch:
+
+1. Clone this repo with Git LFS and pull the tracked JSONL dataset.
+2. Clone [`PRIME-RL/SimpleVLA-RL`](https://github.com/PRIME-RL/SimpleVLA-RL)
+   and prepare LIBERO according to the SimpleVLA-RL instructions.
+3. Download the official SFT checkpoint
+   [`Haozhan72/Openvla-oft-SFT-libero10-traj1`](https://huggingface.co/Haozhan72/Openvla-oft-SFT-libero10-traj1).
+4. Download the official post-RL checkpoint
+   [`Haozhan72/openvla-oft-libero10-traj1-rl`](https://huggingface.co/Haozhan72/openvla-oft-libero10-traj1-rl)
+   if you want to reproduce the upper-reference baseline or the spatial-data
+   reference branch.
+5. Download/provide the SpatialVLA backend checkpoint used by the training
+   command.
+6. Train R1 and R1+R2 with the hyperparameters above.
+7. Export partial SpaRe-lite checkpoints into full VLA checkpoint directories
+   using `tools/build_eval_model_from_partial_ckpt.py`.
+8. Run LIBERO-10 evaluation through SimpleVLA-RL, applying
+   `patches/simplevla_rl_libero_spawn_runtime.patch` only if CUDA fork errors
+   appear in the LIBERO worker processes.
+
+Common failure modes we observed:
+
+- Missing custom-code files in writable checkpoint sandboxes can break
+  `trust_remote_code=True` loading.
+- LIBERO suite-specific normalization statistics must be compatible with the
+  benchmark being evaluated.
+- All-zero spatial-suite evals can indicate a suite/checkpoint mismatch rather
+  than a broken model.
+- CUDA fork initialization errors inside Ray/LIBERO workers are runtime issues;
+  the provided patch switches those workers to a spawn context without changing
+  model logic.
+
 ## Large Artifacts
 
 Full exported VLA checkpoints are about 29 GB each and are intentionally not
@@ -224,15 +296,25 @@ store for those files.
 
 Relevant produced checkpoint directories in our remote run:
 
-- `libero10_full409_r1` (~29 GB)
-- `libero10_full409_r1r2` (~29 GB)
+- `libero10_full409_r1` (~29 GB): SFT baseline + LIBERO-10 full409 + R1.
+- `libero10_full409_r1r2` (~29 GB): SFT baseline + LIBERO-10 full409 + R1+R2.
+- `libero_spatial_full_r1` (~29 GB): post-RL baseline + spatial offline data + R1.
+- `libero_spatial_full_r1r2` (~29 GB): post-RL baseline + spatial offline data + R1+R2.
 
 The partial training checkpoints are about 2.1 GB each.
 
-At the time this README was written, these large checkpoints were being exported
-and transferred separately for Hugging Face upload. They are not required to
+The first two exported checkpoints have been transferred to local staging for
+Hugging Face upload. After publishing, add the final Hugging Face model links
+here so users can evaluate without retraining. They are not required to
 understand or rerun the pipeline from the official checkpoints, but they are
-useful for direct verification without retraining.
+useful for direct verification.
+
+Suggested Hugging Face model IDs:
+
+- `Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`
+- `Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`
+- `Leo-Haochen-Liu/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`
+- `Leo-Haochen-Liu/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`
 
 ## Notes
 
