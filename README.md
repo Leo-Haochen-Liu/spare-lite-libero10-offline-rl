@@ -311,10 +311,10 @@ useful for direct verification.
 
 Suggested Hugging Face model IDs:
 
-- `Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`
-- `Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`
-- `Leo-Haochen-Liu/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`
-- `Leo-Haochen-Liu/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`
+- `liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`
+- `liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`
+- `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`
+- `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`
 
 ## Notes
 

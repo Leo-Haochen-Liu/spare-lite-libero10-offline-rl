@@ -18,12 +18,12 @@ LOCAL_ROOT = Path("/Users/haochenliu/Downloads/spare-lite-checkpoints-hf-upload-
 UPLOADS = [
     (
         "libero10_full409_r1",
-        "Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409",
+        "liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409",
         "SpaRe-lite R1 checkpoint from official SFT + LIBERO-10 full409 data",
     ),
     (
         "libero10_full409_r1r2",
-        "Leo-Haochen-Liu/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409",
+        "liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409",
         "SpaRe-lite R1+R2 checkpoint from official SFT + LIBERO-10 full409 data",
     ),
 ]
