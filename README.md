@@ -4,6 +4,10 @@ This repository contains the lightweight reproduction pipeline, dataset manifest
 training/evaluation logs, and result figures for a constrained offline-RL study on
 SimpleVLA-RL + LIBERO-10.
 
+## Pipeline Overview
+
+![SpaRe-lite pipeline](figures/spare_lite_pipeline.jpg)
+
 ## Claim
 
 Under a constrained setting with no online RL interaction and only a small set of
@@ -41,7 +45,8 @@ cross-benchmark reference rather than the strict LIBERO-10 full409 comparison.
 - `tools/`: checkpoint export/download/launcher utilities.
 - `data/`: lightweight final LIBERO-10 JSONL dataset and manifest.
 - `results/`: final summaries and eval logs for the SFT-baseline full409 run.
-- `artifacts/`: per-task plots and parsed rollout-count JSON.
+- `figures/`: pipeline and per-task comparison figures.
+- `analysis/`: parsed rollout-count JSON and recovered evaluation metadata.
 - `patches/`: minimal SimpleVLA-RL runtime patch used for LIBERO multiprocessing.
 
 ## Dataset
@@ -204,12 +209,12 @@ not change model logic, action decoding, reward computation, or success criteria
 
 Generated figures:
 
-- `artifacts/libero10_sft_baseline_full409_offline_rl_per_task.png`
-- `artifacts/libero10_postrl_baseline_offline_rl_per_task.png`
+- `figures/libero10_sft_baseline_full409_offline_rl_per_task.png`
+- `figures/libero10_postrl_baseline_offline_rl_per_task.png`
 
 Parsed counts:
 
-- `artifacts/libero10_final_comparison_counts.json`
+- `analysis/libero10_final_comparison_counts.json`
 
 ## Large Artifacts
 
