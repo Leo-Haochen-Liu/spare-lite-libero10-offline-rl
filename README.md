@@ -249,6 +249,14 @@ Generated figures:
 
 - `figures/libero10_sft_baseline_full409_offline_rl_per_task.png`
 - `figures/libero10_postrl_baseline_offline_rl_per_task.png`
+- `figures/libero10_sft_full409_training_diagnostics.png`
+- `figures/libero10_postrl_full409_training_diagnostics.png`
+
+The two training-diagnostic figures are generated from the saved IQL-style
+training logs in `results/training_logs/` using
+`tools/plot_training_diagnostics.py`. They are included as reproducibility and
+debugging artifacts for the offline-RL runs; the main report focuses on the
+rollout success-rate evaluation.
 
 Parsed counts:
 
