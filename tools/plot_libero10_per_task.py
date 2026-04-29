@@ -31,11 +31,13 @@ TASK_MAPPING = {
 COLORS = {
     "official_sft": "#4f79b8",
     "official_postrl": "#6faa61",
-    "sft_full409_r1": "#6faa61",
-    "sft_full409_r1r2": "#e19a43",
-    "postrl_rlbase_r1": "#e19a43",
-    "postrl_rlbase_r1r2": "#df7f4f",
+    "sft_full409_r1": "#2f9e73",
+    "sft_full409_r1r2": "#e6862e",
+    "postrl_rlbase_r1": "#e6a13c",
+    "postrl_rlbase_r1r2": "#df6f3f",
 }
+
+OFFICIAL_SERIES = {"official_sft", "official_postrl"}
 
 
 def load_counts() -> dict:
@@ -68,17 +70,42 @@ def plot_group(filename: str, title: str, series: list[tuple[str, str]], footnot
     x = np.arange(len(TASKS))
     width = min(0.8 / len(series), 0.23)
 
-    fig = plt.figure(figsize=(18, 11), dpi=180)
-    grid = fig.add_gridspec(nrows=2, ncols=1, height_ratios=[3.8, 1.55], hspace=0.22)
+    fig = plt.figure(figsize=(18, 11.5), dpi=180)
+    grid = fig.add_gridspec(
+        nrows=2,
+        ncols=1,
+        height_ratios=[3.75, 1.5],
+        hspace=0.18,
+        top=0.845,
+        bottom=0.08,
+        left=0.07,
+        right=0.985,
+    )
     ax = fig.add_subplot(grid[0])
     mapping_ax = fig.add_subplot(grid[1])
 
+    handles = []
+    labels = []
     offsets = (np.arange(len(series)) - (len(series) - 1) / 2.0) * width
     for idx, (key, label) in enumerate(series):
         entry = counts[key]
         values = [pct(entry, task) for task in TASKS]
         legend_label = f"{label} ({entry['total']} rollouts, avg {avg(entry):.1f}%)"
-        bars = ax.bar(x + offsets[idx], values, width, label=legend_label, color=COLORS[key], alpha=0.96)
+        is_official = key in OFFICIAL_SERIES
+        bars = ax.bar(
+            x + offsets[idx],
+            values,
+            width,
+            label=legend_label,
+            color=COLORS[key],
+            alpha=0.46 if is_official else 0.98,
+            edgecolor="#3a3a3a" if is_official else "none",
+            linewidth=0.6 if is_official else 0.0,
+            hatch="//" if is_official else None,
+            zorder=2 if is_official else 3,
+        )
+        handles.append(bars[0])
+        labels.append(legend_label)
         for bar, value in zip(bars, values):
             label_y = value + 1.5 if value > 0 else 1.2
             ax.text(
@@ -99,14 +126,17 @@ def plot_group(filename: str, title: str, series: list[tuple[str, str]], footnot
     ax.set_xticklabels(TASKS, fontsize=12)
     ax.set_ylabel("Success rate (%)", fontsize=13)
     ax.grid(axis="y", alpha=0.22)
-    ax.set_title(title, fontsize=20, pad=34)
-    ax.legend(
+    fig.suptitle(title, fontsize=21, y=0.965)
+    fig.legend(
+        handles,
+        labels,
         loc="upper center",
-        bbox_to_anchor=(0.5, 1.095),
+        bbox_to_anchor=(0.5, 0.925),
         ncol=2 if len(series) <= 3 else 2,
         frameon=False,
         fontsize=11.5,
-        columnspacing=1.8,
+        columnspacing=2.4,
+        labelspacing=0.85,
         handlelength=1.6,
     )
 
