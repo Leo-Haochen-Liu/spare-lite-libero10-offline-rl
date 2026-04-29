@@ -26,16 +26,16 @@ LIBERO-10 success rates:
 | Official post-RL baseline | 430 / 496 | 86.69% |
 | Offline R1 from official SFT + full409 data | 86 / 500 | 17.20% |
 | Offline R1+R2 from official SFT + full409 data | 92 / 500 | 18.40% |
-| Earlier spatial-offline R1 checkpoint evaluated on LIBERO-10 | 355 / 448 | 79.24% |
-| Earlier spatial-offline R1+R2 checkpoint evaluated on LIBERO-10 | 364 / 448 | 81.25% |
+| Spatial-offline-trained R1 checkpoint evaluated on LIBERO-10 | 355 / 448 | 79.24% |
+| Spatial-offline-trained R1+R2 checkpoint evaluated on LIBERO-10 | 364 / 448 | 81.25% |
 
 The most important controlled comparison is:
 
 `Official SFT < R1 from SFT < R1+R2 from SFT`
 
-The earlier high-performing pair was trained from a different offline data source
+The spatial-offline-trained pair was trained from a different offline data source
 (`libero_spatial_transition_full.jsonl`) and is included as an empirical
-cross-benchmark reference rather than the strict LIBERO-10 full409 comparison.
+cross-dataset reference rather than the strict LIBERO-10 full409 comparison.
 
 ## Repository Layout
 
