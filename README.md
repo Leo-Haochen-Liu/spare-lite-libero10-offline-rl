@@ -321,6 +321,11 @@ Published Hugging Face checkpoints for the post-RL spatial-data reference pair:
 - R1: [`liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`](https://huggingface.co/liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full)
 - R1+R2: [`liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`](https://huggingface.co/liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full)
 
+The first pair is the strict controlled LIBERO-10 full409 experiment from
+the official SFT checkpoint. The second pair starts from the official
+post-RL checkpoint and uses the LIBERO-spatial offline data source; it is
+reported as a reference comparison rather than the main controlled result.
+
 ## Notes
 
 This repo is meant to preserve the reproducible pipeline and the final
