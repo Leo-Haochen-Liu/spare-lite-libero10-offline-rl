@@ -20,11 +20,25 @@ UPLOADS = [
         "libero10_full409_r1",
         "liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409",
         "SpaRe-lite R1 checkpoint from official SFT + LIBERO-10 full409 data",
+        "Haozhan72/Openvla-oft-SFT-libero10-traj1",
     ),
     (
         "libero10_full409_r1r2",
         "liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409",
         "SpaRe-lite R1+R2 checkpoint from official SFT + LIBERO-10 full409 data",
+        "Haozhan72/Openvla-oft-SFT-libero10-traj1",
+    ),
+    (
+        "libero_spatial_full_r1",
+        "liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full",
+        "SpaRe-lite R1 checkpoint from official post-RL baseline + LIBERO-spatial offline data",
+        "Haozhan72/openvla-oft-libero10-traj1-rl",
+    ),
+    (
+        "libero_spatial_full_r1r2",
+        "liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full",
+        "SpaRe-lite R1+R2 checkpoint from official post-RL baseline + LIBERO-spatial offline data",
+        "Haozhan72/openvla-oft-libero10-traj1-rl",
     ),
 ]
 
@@ -33,7 +47,7 @@ def main() -> None:
     api = HfApi()
     print(api.whoami())
 
-    for local_name, repo_id, description in UPLOADS:
+    for local_name, repo_id, description, base_repo in UPLOADS:
         folder = LOCAL_ROOT / local_name
         if not folder.is_dir():
             raise FileNotFoundError(folder)
@@ -47,8 +61,7 @@ def main() -> None:
                 f"# {repo_id.split('/')[-1]}\n\n"
                 f"{description}.\n\n"
                 "Base checkpoint: "
-                "[Haozhan72/Openvla-oft-SFT-libero10-traj1]"
-                "(https://huggingface.co/Haozhan72/Openvla-oft-SFT-libero10-traj1).\n\n"
+                f"[{base_repo}](https://huggingface.co/{base_repo}).\n\n"
                 "Reproduction package: "
                 "https://github.com/Leo-Haochen-Liu/spare-lite-libero10-offline-rl\n",
                 encoding="utf-8",

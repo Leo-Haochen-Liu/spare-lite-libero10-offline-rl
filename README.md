@@ -316,10 +316,10 @@ Published Hugging Face checkpoints for the strict SFT-baseline full409 run:
 - R1: [`liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409`](https://huggingface.co/liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1-libero10-full409)
 - R1+R2: [`liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409`](https://huggingface.co/liuhaoch/Openvla-oft-SFT-libero10-traj1-offline-r1r2-libero10-full409)
 
-Planned Hugging Face model IDs for the post-RL spatial-data reference pair:
+Published Hugging Face checkpoints for the post-RL spatial-data reference pair:
 
-- `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`
-- `liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`
+- R1: [`liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full`](https://huggingface.co/liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1-libero-spatial-full)
+- R1+R2: [`liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full`](https://huggingface.co/liuhaoch/openvla-oft-libero10-traj1-rl-offline-r1r2-libero-spatial-full)
 
 ## Notes
 
