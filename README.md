@@ -70,6 +70,8 @@ needed for worker startup stability.
 - `figures/`: pipeline and per-task comparison figures.
 - `analysis/`: parsed rollout-count JSON and recovered evaluation metadata.
 - `patches/`: minimal SimpleVLA-RL runtime patch used for LIBERO multiprocessing.
+- `docs/environment.md`: hardware, package versions, external repo commit, and
+  runtime environment variables used for the reported runs.
 
 ## Dataset
 
@@ -177,6 +179,8 @@ export ROBOT_PLATFORM=LIBERO
 ```
 
 ## Compute Used
+
+See `docs/environment.md` for the complete environment manifest.
 
 The final remote AutoDL experiments were run on:
 
