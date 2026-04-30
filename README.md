@@ -66,7 +66,8 @@ needed for worker startup stability.
 - `scripts/`: SFT failure rollout collection script.
 - `tools/`: checkpoint export/download/launcher utilities.
 - `data/`: lightweight final LIBERO-10 JSONL dataset and manifest.
-- `results/`: final summaries and eval logs for the SFT-baseline full409 run.
+- `results/`: final summaries, training logs, and evaluation logs for the
+  reported SFT-full409 and post-RL spatial-reference runs.
 - `figures/`: pipeline and per-task comparison figures.
 - `analysis/`: parsed rollout-count JSON and recovered evaluation metadata.
 - `patches/`: minimal SimpleVLA-RL runtime patch used for LIBERO multiprocessing.
@@ -271,6 +272,13 @@ rollout success-rate evaluation.
 Parsed counts:
 
 - `analysis/libero10_final_comparison_counts.json`
+
+Primary evaluation logs:
+
+- `results/sft_full409_r1_eval.log`
+- `results/sft_full409_r1r2_eval.log`
+- `results/postrl_spatial_r1_eval_libero10.log`
+- `results/postrl_spatial_r1r2_eval_libero10.log`
 
 ## Reproduction Checklist
 
